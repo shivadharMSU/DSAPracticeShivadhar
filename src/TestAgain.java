@@ -1,8 +1,19 @@
 
 public class TestAgain {
 
+	int number;
+	static int staticNumber = 1;
 	
-	public static void main(String[] args) {
-		System.out.println("Hi");
+
+	public TestAgain() {
+		super();
 	}
+
+	public TestAgain(int number) {
+		super();
+		this.number = number;
+	}
+
+	
+
 }
