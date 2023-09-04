@@ -1,0 +1,118 @@
+Given an input string s, reverse the order of the words.
+
+A word is defined as a sequence of non-space characters. The words in s will be separated by at least one space.
+
+Return a string of the words in reverse order concatenated by a single space.
+
+Note that s may contain leading or trailing spaces or multiple spaces between two words. The returned string should only have a single space separating the words. Do not include any extra spaces.
+
+ 
+
+Example 1:
+
+Input: s = "the sky is blue"
+Output: "blue is sky the"
+Example 2:
+
+Input: s = "  hello world  "
+Output: "world hello"
+Explanation: Your reversed string should not contain leading or trailing spaces.
+Example 3:
+
+Input: s = "a good   example"
+Output: "example good a"
+Explanation: You need to reduce multiple spaces between two words to a single space in the reversed string.
+ 
+
+Constraints:
+
+1 <= s.length <= 104
+s contains English letters (upper-case and lower-case), digits, and spaces ' '.
+There is at least one word in s.
+
+
+
+Solutions
+
+Step 1: reverse the whole string
+Step 2 : reverse only inidvidual words
+step 3 : remove extra spaces
+
+class Solution {
+    public String reverseWords(String s) {
+
+        int low = 0;
+        int high = s.length();
+        int n = s.length();
+        char[] ch = s.toCharArray();
+         // reverse the letters
+        reverse(ch,low,high-1); 
+        /// reverse the words
+        reverseWords(ch,n);
+        // remove spaces
+        return removeSpaces(ch,n);
+                
+    }
+
+     public String removeSpaces(char[] ch,int n){
+
+       /// declare the pointer
+         int i=0;
+         int j=0;
+
+         while(i<n){
+          // increment i when there is spaces at begining
+            while(i<n && ch[i] == ' '){
+            i++;
+         }
+         //copy letters to the char array j as a index of new char array
+         while(i<n && ch[i] != ' '){
+             ch[j++]=ch[i++];
+         } 
+         // skip spaces after the word and increment i
+         while(i<n && ch[i] == ' '){
+            i++;
+         }
+         // by skipping alll the cases insert only one case to the cha array
+         if(i<n){
+             ch[j++] = ' ';
+         }
+         
+         }
+
+          /// return the char array  by converting string util j 
+      return new String(ch).substring(0,j);
+         
+     }
+
+    public void reverse(char[] ch,int i,int j){
+        // with pointers on one on starting and one at the end we will be swappping
+        // and incrementing the starting pointer and decrementing the ending pointer
+          while(i<j){
+              char temp  = ch[i];
+              ch[i] = ch[j];
+              ch[j] = temp;
+            i++;
+            j--;
+          }
+
+    }
+
+    public void reverseWords(char[] ch,int n){
+        
+        //reverse the words
+        int i=0;
+        int j=0;
+
+        while(i<n){
+              // skip spaces and place the i st start of the i
+              while(i < j || i<n && ch[i] == ' ') i++;
+              // increment j until place the j at the at of the wor=d
+              while(j < i ||  j<n && ch[j] != ' ') j++;
+           // reverse the word
+            reverse(ch,i,j-1);
+        }
+
+    }
+}
+
