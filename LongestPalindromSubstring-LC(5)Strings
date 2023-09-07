@@ -1,0 +1,73 @@
+https://leetcode.com/problems/longest-palindromic-substring/description/
+
+
+5. Longest Palindromic Substring
+
+Given a string s, return the longest 
+palindromic
+ 
+substring
+ in s.
+
+ 
+
+Example 1:
+
+Input: s = "babad"
+Output: "bab"
+Explanation: "aba" is also a valid answer.
+Example 2:
+
+Input: s = "cbbd"
+Output: "bb"
+ 
+
+Constraints:
+
+1 <= s.length <= 1000
+s consist of only digits and English letters.
+
+Solution:
+
+
+In brute force Time complexity is O(n3)
+
+Time Complexity:O(n2)
+Space Complexity: -O(1)
+
+Code:
+
+
+loop the each chareter of string with i as a ointer, we will check palindrom for 2 passibilities
+for odd we will use mid char as pointer , like aba b is my ponter to start checking pointer
+for even we will use two pointers i, i+1 example abba here b and b will my starting pointer
+
+class Solution {
+  private int start;
+        private int max;
+    public String longestPalindrome(String s) {
+
+
+        for(int i=0;i<s.length();i++){
+          expand(s,i,i);
+          expand(s,i,i+1);       
+        }
+      return s.substring(start,start+max);
+        
+    }
+
+    public void expand(String s,int i,int j){
+
+         while(i>=0 && j<s.length() && s.charAt(i) == s.charAt(j)){
+             i--;
+             j++;
+         }
+
+         if(max<j-i-1){
+               start = i+1;
+               max = j-i-1;
+         }
+
+    }
+}
+
