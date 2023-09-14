@@ -1,0 +1,81 @@
+
+https://leetcode.com/problems/longest-repeating-character-replacement/description/
+
+424. Longest Repeating Character Replacement
+
+You are given a string s and an integer k. You can choose any character of the string and change it to any other uppercase English character. You can perform this operation at most k times.
+
+Return the length of the longest substring containing the same letter you can get after performing the above operations.
+
+ 
+
+Example 1:
+
+Input: s = "ABAB", k = 2
+Output: 4
+Explanation: Replace the two 'A's with two 'B's or vice versa.
+Example 2:
+
+Input: s = "AABABBA", k = 1
+Output: 4
+Explanation: Replace the one 'A' in the middle with 'B' and form "AABBBBA".
+The substring "BBBB" has the longest repeating letters, which is 4.
+There may exists other ways to achive this answer too.
+ 
+
+Constraints:
+
+1 <= s.length <= 105
+s consists of only uppercase English letters.
+0 <= k <= s.length
+
+
+
+
+Optimized solutoin
+
+public int characterReplacement(String s, int k) {
+    // Initialize variables to keep track of the maximum substring length, start position, and character frequency array.
+    int max = 0;
+    int start = 0;
+    int[] arr = new int[26]; // Assuming input only contains uppercase English letters ('A' to 'Z').
+    int maxFreq = 0; // Keep track of the maximum character frequency.
+    int res = 0; // Initialize the result variable to store the maximum substring length.
+
+    // Iterate through the string 's' from left to right.
+    for (int end = 0; end < s.length(); end++) {
+        // Update the character frequency array for the current character.
+        arr[s.charAt(end) - 'A']++;
+        int freq = arr[s.charAt(end) - 'A'];
+
+        // Update the maximum character frequency seen so far.
+        maxFreq = Math.max(maxFreq, freq);
+
+        // Check if the current substring length minus the maximum frequency plus one exceeds 'k'.
+        if (end - start - maxFreq + 1 > k) {
+            // If it does, move the 'start' pointer to shrink the window and maintain a valid substring.
+            arr[s.charAt(start) - 'A']--;
+            start++;
+        }
+
+        // Update the result with the maximum valid substring length seen so far.
+        res = Math.max(res, end - start + 1);
+    }
+
+    // Return the maximum substring length that can be achieved with at most 'k' replacements.
+    return res;
+}
+
+
+Time Complexity:
+The time complexity of this code is O(N), where N is the length of the input string s. The code iterates through the string once using two pointers, start and end, and performs constant-time operations within the loop for each character. The key operation is updating the arr array, which has a fixed size of 26 (assuming only uppercase English letters), so it's constant time. Overall, the code's time complexity is linear with respect to the length of the input string.
+
+Space Complexity:
+The space complexity of this code is O(26) or simply O(1), as the size of the arr array is fixed and independent of the input size. Regardless of the length of the input string, the array size remains constant, and the code uses a constant amount of additional space for other variables like max, start, maxFreq, and res. Therefore, the space complexity is constant.
+
+
+In summary:
+
+Time Complexity: O(N)
+Space Complexity: O(1)
+This code efficiently finds the maximum substring length with at most k replacements in linear time and uses a constant amount of extra space.
