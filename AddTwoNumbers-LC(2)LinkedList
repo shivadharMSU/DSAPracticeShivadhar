@@ -1,0 +1,85 @@
+
+https://leetcode.com/problems/add-two-numbers/submissions/703550578/
+
+You are given two non-empty linked lists representing two non-negative integers. The digits are stored in reverse order, and each of their nodes contains a single digit. Add the two numbers and return the sum as a linked list.
+
+You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+
+
+Input: l1 = [2,4,3], l2 = [5,6,4]
+Output: [7,0,8]
+Explanation: 342 + 465 = 807.
+Example 2:
+
+Input: l1 = [0], l2 = [0]
+Output: [0]
+Example 3:
+
+Input: l1 = [9,9,9,9,9,9,9], l2 = [9,9,9,9]
+Output: [8,9,9,9,0,0,0,1]
+
+
+
+class Solution {
+    
+    // This method takes two linked lists representing non-empty positive integers
+    // and returns a linked list representing their sum.
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        
+        // Create a dummy node to serve as the head of the result linked list.
+        ListNode dummy = new ListNode(); 
+        ListNode temp = dummy; // Initialize a temporary pointer to the dummy node.
+          
+        int carry = 0; // Initialize a variable to keep track of the carry.
+        
+        // Continue the loop as long as there are digits left in either of the input lists
+        // or there is a carry from the previous addition.
+        while (l1 != null || l2 != null || carry == 1) {
+            int sum = 0; // Initialize a variable to store the sum of digits at the current position.
+            
+            // If there are digits left in the first input list, add its value to 'sum'.
+            if (l1 != null) {
+                sum += l1.val;
+                l1 = l1.next;
+            }
+            
+            // If there are digits left in the second input list, add its value to 'sum'.
+            if (l2 != null) {
+                sum += l2.val;
+                l2 = l2.next;
+            }
+            
+            // Add the carry from the previous addition to 'sum'.
+            sum += carry;
+            
+            // Calculate the carry for the next addition (if any).
+            carry = sum / 10;
+            
+            // Create a new node with the digit at the current position and
+            // attach it to the result linked list.
+            ListNode node = new ListNode(sum % 10);
+            temp.next = node;
+            temp = temp.next; // Move the temporary pointer to the newly added node.
+        }
+        
+        // Return the result linked list, starting from the node after the dummy node.
+        return dummy.next;
+    }
+}
+
+
+The time and space complexity of the provided code for adding two numbers represented as linked lists is as follows:
+
+Time Complexity:
+The code iterates through both linked lists once, going through all the digits from the least significant digit to the most significant digit. Therefore, the time complexity of the code is O(max(N, M)), where N and M are the lengths of the input linked lists l1 and l2, respectively. In other words, it is linear with respect to the length of the longer input list.
+
+Space Complexity:
+The space complexity is determined by the additional space used to store the result linked list. It doesn't depend on the input size directly.
+
+The result linked list contains at most max(N, M) + 1 nodes (where max(N, M) is the length of the longer input list). This is because there can be an additional carry node in the result if the addition of the last digits produces a carry.
+
+The code uses a constant amount of extra space for variables like dummy, temp, carry, and sum.
+
+Therefore, the space complexity of the code is O(max(N, M)), which is linear with respect to the length of the longer input list.
+
+In summary, the time complexity is O(max(N, M)), and the space complexity is O(max(N, M)), where N and M are the lengths of the input linked lists l1 and l2, respectively.
