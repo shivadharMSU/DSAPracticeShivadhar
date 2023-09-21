@@ -1,0 +1,93 @@
+Link- https://leetcode.com/problems/copy-list-with-random-pointer/description/
+A linked list of length n is given such that each node contains an additional random pointer, which could point to any node in the list, or null.
+
+Construct a deep copy of the list. The deep copy should consist of exactly n brand new nodes, where each new node has its value set to the value of its corresponding original node. Both the next and random pointer of the new nodes should point to new nodes in the copied list such that the pointers in the original list and copied list represent the same list state. None of the pointers in the new list should point to nodes in the original list.
+
+For example, if there are two nodes X and Y in the original list, where X.random --> Y, then for the corresponding two nodes x and y in the copied list, x.random --> y.
+
+Return the head of the copied linked list.
+
+The linked list is represented in the input/output as a list of n nodes. Each node is represented as a pair of [val, random_index] where:
+
+val: an integer representing Node.val
+random_index: the index of the node (range from 0 to n-1) that the random pointer points to, or null if it does not point to any node.
+Your code will only be given the head of the original linked list.
+
+Input: head = [[7,null],[13,0],[11,4],[10,2],[1,0]]
+Output: [[7,null],[13,0],[11,4],[10,2],[1,0]]
+
+Code
+/*
+   // Definition for a Node.
+   class Node {
+       int val;
+       Node next;
+       Node random;
+
+       public Node(int val) {
+           this.val = val;
+           this.next = null;
+           this.random = null;
+       }
+   }
+*/
+
+class Solution {
+
+    public Node copyRandomList(Node head) {
+        
+        // Create a current node pointer to traverse the original list.
+        Node cur = head;
+        
+        // Create a HashMap to map original nodes to their corresponding new nodes.
+        HashMap<Node, Node> map = new HashMap();
+
+        // First Pass: Create a copy of each node and store it in the HashMap.
+        while (cur != null) {
+            // For each original node 'cur', create a new node with the same value.
+            map.put(cur, new Node(cur.val));
+            // Move to the next node in the original list.
+            cur = cur.next;
+        }
+        
+        // Reset the current pointer to the head of the original list.
+        cur = head;
+        
+        // Second Pass: Update the 'next' and 'random' pointers of the new nodes.
+        while (cur != null) {
+            // Update the 'next' pointer of the new node by looking it up in the HashMap.
+            map.get(cur).next = map.get(cur.next);
+            // Update the 'random' pointer of the new node by looking it up in the HashMap.
+            map.get(cur).random = map.get(cur.random);
+            // Move to the next node in the original list.
+            cur = cur.next;
+        }
+        
+        // The head of the copied list can be obtained from the HashMap and returned.
+        return map.get(head);
+    }
+}
+
+
+
+The time and space complexity of the provided code for copying a linked list with random pointers can be analyzed as follows:
+
+Time Complexity:
+
+In the first pass, we iterate through the original linked list once, creating a new node for each original node. This is done in a single while loop, resulting in a time complexity of O(N), where N is the number of nodes in the linked list.
+
+In the second pass, we again iterate through the original linked list once to update the next and random pointers of the new nodes. This is also done in a single while loop with constant time operations inside the loop. Thus, the time complexity of the second pass is also O(N).
+
+Overall, the time complexity of the entire code is O(N + N), which simplifies to O(N), where N is the number of nodes in the linked list.
+
+Space Complexity:
+
+We use a HashMap to store the mapping between original nodes and their corresponding new nodes. In the worst case, where all nodes are distinct, the HashMap will store N entries, where N is the number of nodes in the linked list. Therefore, the space complexity for storing this HashMap is O(N).
+
+Apart from the HashMap, the code uses a few additional variables (e.g., cur and the new nodes). These variables have constant space requirements, and their space complexity is considered O(1).
+
+Overall, the space complexity of the code is dominated by the HashMap, so the total space complexity is O(N).
+
+
+
+
