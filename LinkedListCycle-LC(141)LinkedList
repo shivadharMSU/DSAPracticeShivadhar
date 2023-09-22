@@ -1,0 +1,55 @@
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+
+
+
+ Explaination:
+
+ Two pointers, 'slow' and 'fast', start at the head of the linked list.
+The while loop continues as long as 'fast' is not null and 'fast.next' is not null (to avoid null pointer exceptions).
+In each iteration of the loop, 'slow' moves one step forward, and 'fast' moves two steps forward.
+If there is a cycle in the linked list, 'fast' will eventually catch up to 'slow', and they will meet at the same node.
+When 'fast' and 'slow' meet (i.e., 'fast == slow'), the method returns true to indicate the presence of a cycle.
+If the loop completes without 'fast' ever catching up to 'slow', it means there is no cycle in the linked list, and the method returns false.
+
+
+This algorithm is efficient and works in O(n) time complexity, where 'n' is the number of nodes in the linked list.
+
+
+
+
+
+
+
+public class Solution {
+    public boolean hasCycle(ListNode head) {
+        // Initialize two pointers, 'slow' and 'fast', both pointing to the head of the linked list.
+        ListNode slow = head;
+        ListNode fast = head;
+
+        // Traverse the linked list with two pointers, 'slow' advancing one node at a time
+        // and 'fast' advancing two nodes at a time. This is a classic technique to detect cycles.
+        while (fast != null && fast.next != null) {
+            slow = slow.next;          // Move 'slow' one step forward.
+            fast = fast.next.next;     // Move 'fast' two steps forward.
+
+            // If 'slow' and 'fast' meet at the same node, it means there is a cycle in the linked list.
+            if (fast == slow) {
+                return true;           // Return true to indicate the presence of a cycle.
+            }
+        }
+
+        // If we reach this point, it means we have reached the end of the linked list without
+        // finding a cycle, so we return false.
+        return false;
+    }
+}
