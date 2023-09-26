@@ -1,0 +1,129 @@
+Link : https://leetcode.com/problems/largest-rectangle-in-histogram/
+84. Largest Rectangle in Histogram
+
+Given an array of integers heights representing the histogram's bar height where the width of each bar is 1, return the area of the largest rectangle in the histogram
+
+Input: heights = [2,1,5,6,2,3]
+Output: 10
+Explanation: The above is a histogram where width of each bar is 1.
+The largest rectangle is shown in the red area, which has an area = 10 units.
+
+
+import javafx.util.Pair; // Import necessary libraries
+
+import java.util.Stack;
+
+public class MaxRectangleHistogram {
+
+    public static void main(String[] args) {
+        // Calculate the largest rectangle area for the given histogram heights
+        int maxArea = largestRectangleArea(new int[]{2, 1, 5, 6, 2, 3});
+        System.out.println("max area is " + maxArea);
+    }
+
+    public static int largestRectangleArea(int[] heights) {
+        int area = 0, n = heights.length;
+        int start; // Initialize variables to store the area and the starting index
+        Stack<Pair<Integer, Integer>> stack = new Stack<>(); // Create a stack of pairs (index, height)
+
+        for (int i = 0; i < heights.length; i++) {
+            int curHt = heights[i]; // Get the current height at index i
+            start = i; // Initialize the starting index to the current index
+
+            // Check if the stack is not empty and the height at the top of the stack is greater
+            while (!stack.isEmpty() && stack.peek().getValue() > curHt) {
+                Pair<Integer, Integer> pair = stack.pop(); // Pop the pair from the stack
+                int index = pair.getKey(); // Get the index from the pair
+                int h = pair.getValue(); // Get the height from the pair
+                area = Math.max(area, h * (i - index)); // Calculate the area and update if it's larger
+                start = index; // Update the starting index to the popped index
+            }
+            
+            // Push the current index and height onto the stack
+            stack.push(new Pair(start, curHt));
+        }
+
+        // After processing all heights, check if there are any remaining elements in the stack
+        while (!stack.isEmpty()) {
+            Pair<Integer, Integer> pair = stack.pop(); // Pop the pair from the stack
+            int index = pair.getKey(); // Get the index from the pair
+            int h = pair.getValue(); // Get the height from the pair
+            area = Math.max(area, h * (n - index)); // Calculate the area and update if it's larger
+        }
+
+        return area; // Return the maximum area
+    }
+}
+
+
+Explaination:
+
+Certainly! Let's walk through the code with some debug analysis to better understand how it works:
+
+1. The `largestRectangleArea` method takes an array of `heights` representing a histogram and calculates the largest rectangle area that can be formed within this histogram.
+
+2. It initializes variables:
+   - `area`: To keep track of the maximum area found.
+   - `n`: The total number of elements in the `heights` array.
+   - `start`: A variable to store the starting index of a potential rectangle.
+   - `stack`: A stack of pairs, where each pair contains an index and the corresponding height.
+
+3. It then iterates through the `heights` array using a for loop:
+
+   ```java
+   for (int i = 0; i < heights.length; i++) {
+   ```
+
+4. Inside the loop, it gets the current height and initializes the `start` variable to the current index:
+
+   ```java
+   int curHt = heights[i];
+   start = i;
+   ```
+
+5. It checks if the `stack` is not empty and if the height at the top of the stack is greater than the current height:
+
+   ```java
+   while (!stack.isEmpty() && stack.peek().getValue() > curHt) {
+   ```
+
+6. If the condition is met, it enters the while loop. Here's what happens inside the loop:
+
+   - It pops a pair (index, height) from the stack.
+   - It calculates the area of the rectangle formed by the popped pair and the current index. This is done by multiplying the height with the difference in indices:
+
+     ```java
+     area = Math.max(area, h * (i - index));
+     ```
+
+   - It updates the `start` variable to the popped index, as this is the new potential starting point for a rectangle.
+
+7. After the while loop, it pushes the current index and height onto the stack:
+
+   ```java
+   stack.push(new Pair(start, curHt));
+   ```
+
+   This is done because the current height may be part of a larger rectangle that extends to the right.
+
+8. The loop continues to the next element in the `heights` array, and the process repeats.
+
+9. After processing all heights, the code checks if there are any remaining elements in the stack. If so, it calculates the areas for those rectangles as well:
+
+   ```java
+   while (!stack.isEmpty()) {
+       Pair<Integer, Integer> pair = stack.pop();
+       int index = pair.getKey();
+       int h = pair.getValue();
+       area = Math.max(area, h * (n - index));
+   }
+   ```
+
+10. Finally, the method returns the maximum area found.
+
+To better understand how the code works, you can add print statements at various points in the code to track the values of variables and the state of the stack during execution. This will help you see how the stack is used to identify and calculate the largest rectangle areas in the histogram.
+
+Time and cpace complexity
+The time complexity of the provided code is O(n), where "n" is the number of elements in the heights array. This is because the code iterates through the heights array exactly once using a single loop. Inside the loop, each element is pushed onto the stack once and popped from the stack at most once, leading to linear time complexity.
+
+The space complexity of the code is also O(n), primarily due to the space used by the stack data structure. In the worst case, all elements of the heights array may be pushed onto the stack. Additionally, the space used by other variables is constant and does not depend on the size of the input array. Therefore, the dominant factor in space complexity is the stack, resulting in linear space complexity.
