@@ -1,0 +1,148 @@
+
+
+Link - https://leetcode.com/problems/maximum-depth-of-binary-tree/description/
+
+Given the root of a binary tree, return its maximum depth.
+
+A binary trees maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+
+Solution
+Interview the routinr recursive approch might be not satisfied may ask bfs way to solve this
+
+DFS  solution:
+
+class Solution {
+
+    // This method calculates the maximum depth (height) of a binary tree.
+    public int maxDepth(TreeNode root) {
+
+        // Base case: If the root is null, the depth is 0.
+        if (root == null) {
+            return 0;
+        }
+
+        // Recursively calculate the maximum depth of the left and right subtrees,
+        // and take the maximum of these depths. Add 1 to account for the current node.
+        int leftDepth = maxDepth(root.left);
+        int rightDepth = maxDepth(root.right);
+        return 1 + Math.max(leftDepth, rightDepth);
+    }
+}
+
+Bfs Solution: 
+
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public int maxDepth(TreeNode root) {
+        // Create a queue for level order traversal.
+        Queue<TreeNode> queue = new LinkedList<TreeNode>();
+        
+        // Check if the root is not null; if it is, the tree is empty, and the depth is 0.
+        if (root != null) {
+            queue.add(root); // Add the root node to the queue to start the traversal.
+        } else {
+            return 0; // If the tree is empty, its depth is 0.
+        }
+        
+        int height = 0; // Initialize the height to 0.
+
+        while (!queue.isEmpty()) {
+            height++; // Increment the height for each level.
+            int currLevelSize = queue.size(); // Get the number of nodes at the current level.
+
+            // Process all nodes at the current level.
+            while (currLevelSize-- != 0) {
+                TreeNode node = queue.poll(); // Dequeue a node from the front of the queue.
+                
+                // Enqueue the left child if it exists.
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+                
+                // Enqueue the right child if it exists.
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+            }
+        }
+        
+        return height; // Return the final height of the binary tree.
+    }
+}
+
+
+Iterative solution usingh stack:
+
+import java.util.Stack;
+
+class Solution {
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0; // If the tree is empty, its depth is 0.
+        }
+
+        Stack<TreeNode> stack = new Stack<>();
+        Stack<Integer> depths = new Stack<>();
+        int maxDepth = 0; // Initialize the maximum depth.
+
+        stack.push(root);
+        depths.push(1); // Depth of the root is 1.
+
+        while (!stack.isEmpty()) {
+            TreeNode node = stack.pop();
+            int depth = depths.pop();
+
+            // Update the maximum depth if the current depth is greater.
+            maxDepth = Math.max(maxDepth, depth);
+
+            // Push left child and its depth if it exists.
+            if (node.left != null) {
+                stack.push(node.left);
+                depths.push(depth + 1);
+            }
+
+            // Push right child and its depth if it exists.
+            if (node.right != null) {
+                stack.push(node.right);
+                depths.push(depth + 1);
+            }
+        }
+
+        return maxDepth;
+    }
+}
+
+
+
+The time and space complexity of the provided code for calculating the maximum depth of a binary tree is as follows:
+
+Time Complexity:
+
+The code uses a recursive approach to traverse the binary tree.
+At each node, it makes two recursive calls to its left and right children.
+Therefore, the time complexity of this code is O(n), where 'n' is the number of nodes in the binary tree. In the worst case, it visits every node once.
+Space Complexity:
+
+The space complexity is determined by the maximum depth of the call stack during the recursion.
+In the worst case, when the binary tree is completely unbalanced (like a linked list), the maximum depth of the call stack can be 'n' (the number of nodes).
+Therefore, the space complexity of this code is O(n) in the worst case.
+In a balanced binary tree, the space complexity would be O(log n), where 'log n' is the height of the tree, as the maximum depth of the call stack would be logarithmic.
+In summary, the time complexity is O(n) and the space complexity is O(n) in the worst case, but the space complexity can be as low as O(log n) in a balanced binary tree.
+
+
+
+
