@@ -1,0 +1,61 @@
+https://leetcode.com/problems/combination-sum/description/
+
+39. Combination Sum
+
+Given an array of distinct integers candidates and a target integer target, return a list of all unique combinations of candidates where the chosen numbers sum to target. You may return the combinations in any order.
+
+The same number may be chosen from candidates an unlimited number of times. Two combinations are unique if the 
+frequency
+ of at least one of the chosen numbers is different.
+
+The test cases are generated such that the number of unique combinations that sum up to target is less than 150 combinations for the given input.
+
+ 
+
+Example 1:
+
+Input: candidates = [2,3,6,7], target = 7
+Output: [[2,2,3],[7]]
+Explanation:
+2 and 3 are candidates, and 2 + 2 + 3 = 7. Note that 2 can be used multiple times.
+7 is a candidate, and 7 = 7.
+These are the only two combinations.
+Example 2:
+
+Input: candidates = [2,3,5], target = 8
+Output: [[2,2,2,2],[2,3,3],[3,5]]
+Example 3:
+
+Input: candidates = [2], target = 1
+Output: []
+
+class Solution {
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> ans = new ArrayList<List<Integer>>();
+        List<Integer> list = new ArrayList<Integer>();
+        helper(candidates, 0, target, ans, list);
+        return ans;
+    }
+
+    public void helper(int[] arr, int start, int target, List<List<Integer>> ans, List<Integer> list) {
+        if (target == 0) {
+            ans.add(new ArrayList<Integer>(list)); // Add a deep copy of the current list to the answer
+        } else if (target < 0 || start >= arr.length) {
+            return; // Backtrack if the target becomes negative or if we've reached the end of the array
+        } else {
+            list.add(arr[start]);
+            helper(arr, start, target - arr[start], ans, list); // Include the current element
+            list.remove(list.size() - 1); // Remove the last element to backtrack
+            helper(arr, start + 1, target, ans, list); // Exclude the current element
+        }
+    }
+}
+
+
+Time Complexity:
+
+The time complexity of this code is exponential and depends on the number of valid combinations that sum up to the target. In the worst case, where there are many valid combinations, the time complexity can be exponential, but it can be significantly less in cases where there are fewer valid combinations. It's challenging to provide a precise upper bound for the time complexity.
+Space Complexity:
+
+The space complexity is primarily determined by the space used for the recursion stack and the space needed to store the combinations in the ans list. In the worst case, there can be many valid combinations, leading to a large space complexity. Therefore, the space complexity is also challenging to provide a precise upper bound for and depends on the specific input.
+Note: Similar to the previous code, a deep copy of the list is made to ensure that the combinations added to the answer are not modified in subsequent iterations. This is crucial for the correctness of the code.

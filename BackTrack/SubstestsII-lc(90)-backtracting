@@ -1,0 +1,65 @@
+
+
+
+https://leetcode.com/problems/subsets-ii/description/
+90. Subsets II
+Topics
+Companies
+Given an integer array nums that may contain duplicates, return all possible 
+subsets
+ (the power set).
+
+The solution set must not contain duplicate subsets. Return the solution in any order.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,2]
+Output: [[],[1],[1,2],[1,2,2],[2],[2,2]]
+Example 2:
+
+Input: nums = [0]
+Output: [[],[0]]
+ 
+
+Constraints:
+
+1 <= nums.length <= 10
+-10 <= nums[i] <= 10
+
+
+
+
+class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums); // Sort the input array to handle duplicates
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
+
+        subsetWithDuplicates(nums, 0, list, ans);
+        return ans;
+    }
+
+    public void subsetWithDuplicates(int[] nums, int index, List<Integer> list, List<List<Integer>> ans) {
+        ans.add(new ArrayList<>(list)); // Add the current list as a subset
+
+        for (int i = index; i < nums.length; i++) {
+            // Skip duplicate elements to avoid duplicate subsets
+            if (i != index && nums[i - 1] == nums[i]) {
+                continue;
+            }
+            list.add(nums[i]); // Include the current element
+            subsetWithDuplicates(nums, i + 1, list, ans); // Recurse with the updated index
+            list.remove(list.size() - 1); // Backtrack by removing the last added element
+        }
+    }
+}
+
+Time Complexity:
+
+The time complexity of this code is O(2^N), where N is the number of elements in the nums array. This is because the code generates all possible subsets of the input array. The loop that iterates through the elements in the nums array has a time complexity of O(N), and for each element, it either includes it or excludes it, resulting in 2^N possible subsets.
+Space Complexity:
+
+The space complexity is O(N) due to the space required for the recursion stack. In addition, each subset is stored in a list, which also contributes to the space complexity. In the worst case, there can be 2^N subsets, each with an average size of N/2, so the space complexity can be considered O(N * 2^N).
+The code handles duplicates in the input array by sorting it first and then skipping duplicate elements when generating subsets. This ensures that no duplicate subsets are included in the result.

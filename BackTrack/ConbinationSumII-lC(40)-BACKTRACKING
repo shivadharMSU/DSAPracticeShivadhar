@@ -1,0 +1,66 @@
+
+40. Combination Sum II - https://leetcode.com/problems/combination-sum-ii/description/
+
+Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sum to target.
+
+Each number in candidates may only be used once in the combination.
+
+Note: The solution set must not contain duplicate combinations.
+
+ 
+
+Example 1:
+
+Input: candidates = [10,1,2,7,6,1,5], target = 8
+Output: 
+[
+[1,1,6],
+[1,2,5],
+[1,7],
+[2,6]
+]
+Example 2:
+
+Input: candidates = [2,5,2,1,2], target = 5
+Output: 
+[
+[1,2,2],
+[5]
+]
+
+
+class Solution {
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates); // Sort the input array to handle duplicates
+        List<List<Integer>> ans = new ArrayList<>();
+        List<Integer> list = new ArrayList<>();
+        combinationSumHelper(candidates, target, 0, list, ans);
+        return ans;
+    }
+
+    public void combinationSumHelper(int[] candidates, int target, int index, List<Integer> list, List<List<Integer>> ans) {
+        if (target == 0) {
+            ans.add(new ArrayList<>(list)); // Add the current list as a combination
+            return;
+        } else if (target < 0 || index >= candidates.length) {
+            return;
+        } else {
+            for (int i = index; i < candidates.length; i++) {
+                if (i > index && candidates[i - 1] == candidates[i]) {
+                    continue; // Skip duplicate elements to avoid duplicate combinations
+                }
+                list.add(candidates[i]); // Include the current element
+                combinationSumHelper(candidates, target - candidates[i], i + 1, list, ans);
+                list.remove(list.size() - 1); // Backtrack by removing the last added element
+            }
+        }
+    }
+}
+
+Time Complexity:
+
+The time complexity of this code is O(2^N), where N is the number of elements in the candidates array. This is because the code generates all possible combinations of the input array. The loop that iterates through the elements in the candidates array has a time complexity of O(N), and for each element, it either includes it or excludes it, resulting in 2^N possible combinations.
+Space Complexity:
+
+The space complexity is O(N) due to the space required for the recursion stack. In addition, each combination is stored in a list, which also contributes to the space complexity. In the worst case, there can be 2^N combinations, each with an average size of N/2, so the space complexity can be considered O(N * 2^N).
+The code handles duplicates in the input array by sorting it first and then skipping duplicate elements when generating combinations. This ensures that no duplicate combinations are included in the result.
