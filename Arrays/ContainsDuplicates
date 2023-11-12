@@ -1,0 +1,37 @@
+
+brute fore- 
+we will do run two for loops and we will check each and every element wether it appears twice , max time complexity will be 0(n*n)
+
+optimal approch-
+for optimal approch we will use HashSet, loop elemets in array and save in the set , 
+before adding elements to arrays we will check weather whether elements contain in the set or not , 
+if any element already available in arrays we will return true
+
+time complexity wil be 0(N) and space complexity will be 0(n);
+
+Code:
+
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+
+       boolean result = false;
+        HashSet<Integer> set = new HashSet<Integer>();
+    
+        for(int i=0;i<nums.length;i++){
+                   
+                   if(!set.contains(nums[i])){
+                    //   System.out.println("inside for loop "+nums[i]);
+                         set.add(nums[i]); 
+                   }else{
+
+                   //    System.out.println("inside  else for loop "+nums[i]);
+
+                       result = true;
+                       break;
+                   }
+        }
+
+        return result;
+        
+    }
+}
