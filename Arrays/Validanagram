@@ -1,0 +1,31 @@
+
+Optimal approch: 
+tae ome array of size 26 letters , loop first array of size 26 and intialize avaialble char to 1 and loop 2 array and decrement those char by 1 
+at end chekc is there is any char which is not 0
+
+Time: 0(N)
+space: O(26)
+
+class Solution {
+    public boolean isAnagram(String s, String t) {
+
+        int[] alphabets = new int[26];
+        for(char ch:s.toCharArray()){
+          alphabets[ch-'a']++;
+        }
+
+        for(char ch:t.toCharArray()){
+           alphabets[ch-'a']--;
+        }
+
+        for(int i:alphabets){
+            if(i != 0){
+                return false; 
+            }
+        }
+
+        return true;
+        
+        
+    }
+}
