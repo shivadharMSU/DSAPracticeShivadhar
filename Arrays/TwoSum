@@ -8,6 +8,9 @@ optimal-
 use hash map, loop array and check subtract curent element with target and chekc whether value is available in map or not , 
 if not available in map then add current elenet to map , if available return those values in arrays
 
+TC- O(n)
+SC - O(n)
+
 
 
 class Solution {
